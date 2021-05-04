@@ -2,29 +2,38 @@ package com.intern.translator;
 
 import com.intern.translator.models.TranslationEntry;
 import com.intern.translator.models.TranslationMatches;
+import com.intern.translator.models.WordsEntry;
 import com.intern.translator.repositories.TranslatorRepository;
+import com.intern.translator.repositories.WordsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
 public class BackendApplicationInit implements CommandLineRunner {
 
     @Autowired
-    private TranslatorRepository translatorRepository;
+    private WordsRepository wordsRepository;
 
     @Override
     public void run(String... args) throws Exception {
-        TranslationEntry autoEST = new TranslationEntry("auto", "EST");
-        TranslationMatches autoEST_ENGMatches = new TranslationMatches("ENG", Arrays.asList("car", "automobile"));
-        TranslationMatches autoEST_SPAMatches = new TranslationMatches("SPA", Collections.singletonList("carro"));
+        WordsEntry autoEST = new WordsEntry("estonian", "auto");
+        WordsEntry carENG = new WordsEntry("english", "car");
+        WordsEntry carroSPA = new WordsEntry("spanish", "carro");
+        WordsEntry vesiEST = new WordsEntry("estonian", "vesi");
+        WordsEntry waterENG = new WordsEntry("english", "water");
+        WordsEntry aquaENG = new WordsEntry("english", "aqua");
+        WordsEntry aguaSPA = new WordsEntry("spanish", "agua");
 
-        TranslationEntry vesiEST = new TranslationEntry("vesi", "EST");
-        TranslationMatches vesiEST_ENGMatches = new TranslationMatches("ENG", Arrays.asList("water", "aqua"));
-        TranslationMatches vesiEST_SPAMatches = new TranslationMatches("SPA", Collections.singletonList("agua"));
+        List<WordsEntry> wordsEntries = List.of(autoEST,carENG,carroSPA, vesiEST, waterENG, aquaENG, aguaSPA);
+        for (WordsEntry w: wordsEntries) {
+            wordsRepository.save(w);
+        }
+
     }
 }
