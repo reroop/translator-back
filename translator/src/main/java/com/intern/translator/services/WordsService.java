@@ -13,8 +13,16 @@ public class WordsService {
     @Autowired
     private WordsRepository wordsRepository;
 
+    public WordsEntry findWordId(String word, String language) {
+        return wordsRepository.findWordId(word, language);
+    }
+
     public List<WordsEntry> findAllEstonianWords() {
         return wordsRepository.findAllEstonianWords();
+    }
+
+    public List<WordsEntry> getAllWords() {
+        return wordsRepository.getAllWords();
     }
 
     public List<WordsEntry> findByWordInEstonian(String word) {
