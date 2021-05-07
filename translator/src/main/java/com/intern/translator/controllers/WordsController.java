@@ -58,8 +58,17 @@ public class WordsController {
     @PostMapping(value="saveNewTranslation")
     @CrossOrigin
     public MatchesEntry saveWordsPair(@RequestBody UserTranslation userTranslation) {
-        WordsEntry savedWord1 = saveWordsEntry(new WordsEntry(userTranslation.getWordLanguage(), userTranslation.getWord()));
-        WordsEntry savedWord2 = saveWordsEntry(new WordsEntry(userTranslation.getMatchingWordLanguage(), userTranslation.getMatchingWord()));
+
+        WordsEntry savedWord1 = wordsService.findWordId(userTranslation.getWord(), userTranslation.getWordLanguage());
+        if (savedWord1 == null) {
+            savedWord1 = saveWordsEntry(new WordsEntry(userTranslation.getWordLanguage(), userTranslation.getWord()));
+        }
+
+        WordsEntry savedWord2 = wordsService.findWordId(userTranslation.getMatchingWord(), userTranslation.getMatchingWordLanguage());
+        if (savedWord2 == null) {
+            savedWord2 = saveWordsEntry(new WordsEntry(userTranslation.getMatchingWordLanguage(), userTranslation.getMatchingWord()));
+
+        }
 
         MatchesEntry newMatchesEntry = new MatchesEntry(savedWord1.getWord_id(),
                 savedWord1.getLanguage(),
