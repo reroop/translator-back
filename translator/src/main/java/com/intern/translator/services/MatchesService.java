@@ -23,25 +23,33 @@ public class MatchesService {
     private WordsService wordsService;
 
     public List<WordsEntry> findAllEntriesWithWord(String word, String language, String translationLanguage) {
-        Long wordId = wordsService.findWordId(word, language).getWord_id();
 
-        List<Long> translationsWordIDs = new ArrayList<>();
-        //List<MatchesEntry> resultLanguageToTranslation = ;
-        for (MatchesEntry m1: matchesRepository.findMatchingWordsByWordIdAndMatchingLanguage(wordId, translationLanguage)) {
-            translationsWordIDs.add(m1.getMatching_word_id());
+        try {
+            Long wordId = wordsService.findWordId(word, language).getWord_id();
+            List<Long> translationsWordIDs = new ArrayList<>();
+            for (MatchesEntry m1: matchesRepository.findMatchingWordsByWordIdAndMatchingLanguage(wordId, translationLanguage)) {
+                translationsWordIDs.add(m1.getMatching_word_id());
+            }
+
+            for (MatchesEntry m2: matchesRepository.findMatchingWordsByMatchingWordIdAndWordLanguage(wordId, translationLanguage)) {
+                translationsWordIDs.add(m2.getWord_id());
+            }
+
+            List<WordsEntry> result = new ArrayList<>();
+
+            for (Long id: translationsWordIDs) {
+                result.add(wordsService.findById(id));
+            }
+
+            return result;
+        } catch (Exception e) {
+            return null;
         }
 
-        for (MatchesEntry m2: matchesRepository.findMatchingWordsByMatchingWordIdAndWordLanguage(wordId, translationLanguage)) {
-            translationsWordIDs.add(m2.getWord_id());
-        }
+        //Long wordId = wordsService.findWordId(word, language).getWord_id();
 
-        List<WordsEntry> result = new ArrayList<>();
 
-        for (Long id: translationsWordIDs) {
-            result.add(wordsService.findById(id));
-        }
 
-        return result;
     }
 
     @CrossOrigin

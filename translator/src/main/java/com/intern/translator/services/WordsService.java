@@ -3,6 +3,7 @@ package com.intern.translator.services;
 import com.intern.translator.models.WordsEntry;
 import com.intern.translator.repositories.WordsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +15,14 @@ public class WordsService {
     private WordsRepository wordsRepository;
 
     public WordsEntry findWordId(String word, String language) {
-        return wordsRepository.findWordId(word, language);
+        WordsEntry checkEntry = new WordsEntry(language, word);
+        if (wordsRepository.exists(Example.of(checkEntry))) {
+            return wordsRepository.findWordId(word, language);
+        }
+        else {
+            //System.out.println("no such word found: " + word + ", "+ language);
+            return null;
+        }
     }
 
     public List<WordsEntry> findAllEstonianWords() {
@@ -31,6 +39,9 @@ public class WordsService {
 
     public WordsEntry save(WordsEntry wordsEntry) {
         //todo: add not null checks for word and language
+        if (wordsEntry.getWord() == null || wordsEntry.getLanguage() == null) {
+            return null;
+        }
         return wordsRepository.save(wordsEntry);
     }
 

@@ -2,6 +2,7 @@ package com.intern.translator.controllers;
 
 
 import com.intern.translator.models.MatchesEntry;
+import com.intern.translator.models.UserTranslation;
 import com.intern.translator.models.WordsEntry;
 import com.intern.translator.services.MatchesService;
 import com.intern.translator.services.WordsService;
@@ -51,12 +52,14 @@ public class WordsController {
 
     @CrossOrigin
     @PostMapping
-    public WordsEntry saveWordsEntry(@RequestBody WordsEntry wordsEntry) {return wordsService.save(wordsEntry);}
+    public WordsEntry saveWordsEntry(WordsEntry wordsEntry) {return wordsService.save(wordsEntry);}
 
+
+    @PostMapping(value="saveNewTranslation")
     @CrossOrigin
-    public MatchesEntry saveWordsPair(@RequestBody WordsEntry wordsEntry1, @RequestBody WordsEntry wordsEntry2) {
-        WordsEntry savedWord1 = saveWordsEntry(wordsEntry1);
-        WordsEntry savedWord2 = saveWordsEntry(wordsEntry2);
+    public MatchesEntry saveWordsPair(@RequestBody UserTranslation userTranslation) {
+        WordsEntry savedWord1 = saveWordsEntry(new WordsEntry(userTranslation.getWordLanguage(), userTranslation.getWord()));
+        WordsEntry savedWord2 = saveWordsEntry(new WordsEntry(userTranslation.getMatchingWordLanguage(), userTranslation.getMatchingWord()));
 
         MatchesEntry newMatchesEntry = new MatchesEntry(savedWord1.getWord_id(),
                 savedWord1.getLanguage(),
@@ -65,4 +68,5 @@ public class WordsController {
 
         return matchesService.saveMatchesEntry(newMatchesEntry);
     }
+
 }
