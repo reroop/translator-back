@@ -25,8 +25,6 @@ public class WordsController {
     @GetMapping("languageWords/{language}")
     public List<WordsEntry> getAllWordsWithLanguage(@PathVariable(value="language") String language) {return wordsService.findAllLanguageWords(language);}
 
-
-
     @CrossOrigin
     @GetMapping("{id}")
     public WordsEntry getWordsEntry(@PathVariable Long id) {

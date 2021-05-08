@@ -16,4 +16,10 @@ public class UserTranslation {
     private String matchingWordLanguage;
     private String matchingWord;
 
+    public UserTranslation(String wordLanguage, String word, String matchingWordLanguage, String matchingWord) {
+        this.wordLanguage = wordLanguage;
+        this.word = word;
+        this.matchingWordLanguage = matchingWordLanguage;
+        this.matchingWord = matchingWord;
+    }
 }

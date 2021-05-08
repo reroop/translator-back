@@ -20,7 +20,12 @@ public class BackendApplicationInit implements CommandLineRunner {
     private MatchesRepository matchesRepository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
+        /**
+         * WARNING: DO NOT CHANGE, tests depend on these entries
+         */
+
+
         WordsEntry autoEST = new WordsEntry("estonian", "auto");
         WordsEntry carENG = new WordsEntry("english", "car");
         WordsEntry carroSPA = new WordsEntry("spanish", "carro");
