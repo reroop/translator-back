@@ -15,30 +15,16 @@ public class WordsService {
     private WordsRepository wordsRepository;
 
     public WordsEntry findWordId(String word, String language) {
-        WordsEntry checkEntry = new WordsEntry(language, word);
+        WordsEntry checkEntry = new WordsEntry(language.toLowerCase(), word.toLowerCase());
         if (wordsRepository.exists(Example.of(checkEntry))) {
             return wordsRepository.findWordId(word, language);
         }
         else {
-            //System.out.println("no such word found: " + word + ", "+ language);
             return null;
         }
     }
 
-    public List<WordsEntry> findAllEstonianWords() {
-        return wordsRepository.findAllEstonianWords();
-    }
-
-    public List<WordsEntry> getAllWords() {
-        return wordsRepository.getAllWords();
-    }
-
-    public List<WordsEntry> findByWordInEstonian(String word) {
-        return wordsRepository.findByWordInEstonian(word);
-    }
-
     public WordsEntry save(WordsEntry wordsEntry) {
-        //todo: add not null checks for word and language
         if (wordsEntry.getWord() == null || wordsEntry.getLanguage() == null) {
             return null;
         }
@@ -46,7 +32,11 @@ public class WordsService {
     }
 
     public WordsEntry findById(Long id) {
-        //todo: orElseThrow some exception
+        // orElse works, but not very elegant
         return wordsRepository.findById(id).orElse(new WordsEntry("estonian", "ERROR"));
+    }
+
+    public List<WordsEntry> findAllLanguageWords(String language) {
+        return wordsRepository.findAllLanguageWords(language);
     }
 }

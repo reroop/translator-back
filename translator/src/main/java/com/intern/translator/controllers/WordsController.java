@@ -22,20 +22,10 @@ public class WordsController {
     private MatchesService matchesService;
 
     @CrossOrigin
-    @GetMapping("allWords")
-    public List<WordsEntry> getAllWords() {return wordsService.getAllWords();}
+    @GetMapping("languageWords/{language}")
+    public List<WordsEntry> getAllWordsWithLanguage(@PathVariable(value="language") String language) {return wordsService.findAllLanguageWords(language);}
 
-    @CrossOrigin
-    @GetMapping("estonian")
-    public List<WordsEntry> getAllEstonianWords() {
-        return wordsService.findAllEstonianWords();
-    }
 
-    @CrossOrigin
-    @GetMapping("estonian/{word}")
-    public List<WordsEntry> getEstonianWord(@PathVariable(value = "word") String word) {
-        return wordsService.findByWordInEstonian(word);
-    }
 
     @CrossOrigin
     @GetMapping("{id}")
@@ -60,20 +50,27 @@ public class WordsController {
     public MatchesEntry saveWordsPair(@RequestBody UserTranslation userTranslation) {
 
         WordsEntry savedWord1 = wordsService.findWordId(userTranslation.getWord(), userTranslation.getWordLanguage());
+        WordsEntry savedWord2 = wordsService.findWordId(userTranslation.getMatchingWord(), userTranslation.getMatchingWordLanguage());
+
+        if (savedWord1 != null & savedWord2 != null) {  //to avoid multiple same translations
+            if (matchesService.findAlreadyEnteredMatchWithWords(savedWord1.getWord_id(), savedWord2.getWord_id()) != null) {
+                return null;
+            }
+        }
+
         if (savedWord1 == null) {
             savedWord1 = saveWordsEntry(new WordsEntry(userTranslation.getWordLanguage(), userTranslation.getWord()));
         }
 
-        WordsEntry savedWord2 = wordsService.findWordId(userTranslation.getMatchingWord(), userTranslation.getMatchingWordLanguage());
         if (savedWord2 == null) {
             savedWord2 = saveWordsEntry(new WordsEntry(userTranslation.getMatchingWordLanguage(), userTranslation.getMatchingWord()));
-
         }
 
         MatchesEntry newMatchesEntry = new MatchesEntry(savedWord1.getWord_id(),
                 savedWord1.getLanguage(),
                 savedWord2.getWord_id(),
-                savedWord2.getLanguage());
+                savedWord2.getLanguage()
+        );
 
         return matchesService.saveMatchesEntry(newMatchesEntry);
     }
