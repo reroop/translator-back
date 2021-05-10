@@ -23,7 +23,7 @@ public class WordsEntry {
     private String word;
 
     public WordsEntry(String language, String word) {
-        this.language=language;
-        this.word=word;
+        this.language = language;
+        this.word = word;
     }
 }

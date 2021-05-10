@@ -36,9 +36,9 @@ public class BackendApplicationInit implements CommandLineRunner {
         WordsEntry soiduautoEST = new WordsEntry("estonian", "sõiduauto");
         WordsEntry automobileENG = new WordsEntry("english", "automobile");
 
-        List<WordsEntry> wordsEntries = List.of(autoEST,carENG,carroSPA, vesiEST, waterENG,
+        List<WordsEntry> wordsEntries = List.of(autoEST, carENG, carroSPA, vesiEST, waterENG,
                 aquaENG, aguaSPA, soiduautoEST, automobileENG);
-        for (WordsEntry w: wordsEntries) {
+        for (WordsEntry w : wordsEntries) {
             wordsRepository.save(w);
         }
 
@@ -54,7 +54,7 @@ public class BackendApplicationInit implements CommandLineRunner {
         List<MatchesEntry> matchesEntries = List.of(autoESTENG, autoESTSPA, vesiESTENG, vesiESTENG2, vesiESTSPA,
                 carENGEST, automobileENGEST, automobileENGEST2);
 
-        for (MatchesEntry m: matchesEntries) {
+        for (MatchesEntry m : matchesEntries) {
             matchesRepository.save(m);
         }
 

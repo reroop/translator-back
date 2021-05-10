@@ -23,7 +23,9 @@ public class WordsController {
 
     @CrossOrigin
     @GetMapping("languageWords/{language}")
-    public List<WordsEntry> getAllWordsWithLanguage(@PathVariable(value="language") String language) {return wordsService.findAllLanguageWords(language);}
+    public List<WordsEntry> getAllWordsWithLanguage(@PathVariable(value = "language") String language) {
+        return wordsService.findAllLanguageWords(language);
+    }
 
     @CrossOrigin
     @GetMapping("{id}")
@@ -33,17 +35,19 @@ public class WordsController {
 
     @CrossOrigin
     @GetMapping("findWordId/{language}/{word}")
-    public WordsEntry findWordId(@PathVariable(value="word") String word,
-                           @PathVariable(value="language") String language) {
+    public WordsEntry findWordId(@PathVariable(value = "word") String word,
+                                 @PathVariable(value = "language") String language) {
         return wordsService.findWordId(word, language);
     }
 
     @CrossOrigin
     @PostMapping
-    public WordsEntry saveWordsEntry(WordsEntry wordsEntry) {return wordsService.save(wordsEntry);}
+    public WordsEntry saveWordsEntry(WordsEntry wordsEntry) {
+        return wordsService.save(wordsEntry);
+    }
 
 
-    @PostMapping(value="saveNewTranslation")
+    @PostMapping(value = "saveNewTranslation")
     @CrossOrigin
     public MatchesEntry saveWordsPair(@RequestBody UserTranslation userTranslation) {
 

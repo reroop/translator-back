@@ -1,6 +1,5 @@
 package com.intern.translator.controllers;
 
-import com.intern.translator.models.MatchesEntry;
 import com.intern.translator.models.WordsEntry;
 import com.intern.translator.services.MatchesService;
 import org.springframework.beans.factory.annotation.Autowired;

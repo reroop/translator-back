@@ -30,22 +30,22 @@ public class MatchesService {
         try {
             Long wordId = wordsService.findWordId(word, language).getWord_id();
             List<Long> translationsWordIDs = new ArrayList<>();
-            for (MatchesEntry m1: matchesRepository.findMatchingWordsByWordIdAndMatchingLanguage(wordId, translationLanguage)) {
+            for (MatchesEntry m1 : matchesRepository.findMatchingWordsByWordIdAndMatchingLanguage(wordId, translationLanguage)) {
                 translationsWordIDs.add(m1.getMatching_word_id());
             }
 
-            for (MatchesEntry m2: matchesRepository.findMatchingWordsByMatchingWordIdAndWordLanguage(wordId, translationLanguage)) {
+            for (MatchesEntry m2 : matchesRepository.findMatchingWordsByMatchingWordIdAndWordLanguage(wordId, translationLanguage)) {
                 translationsWordIDs.add(m2.getWord_id());
             }
 
             List<WordsEntry> result = new ArrayList<>();
 
-            for (Long id: translationsWordIDs) {
+            for (Long id : translationsWordIDs) {
                 result.add(wordsService.findById(id));
             }
 
             return result;
-        } catch (Exception e) {     //todo: maybe possible place for infinite recursion?
+        } catch (Exception e) {
             String possibleFuzzyWord = findFuzzyMatchForWord(word, language, translationLanguage);
             if (possibleFuzzyWord == null) {
                 return null;
@@ -62,7 +62,7 @@ public class MatchesService {
         List<MatchesEntry> foundEntriesWithLanguages = matchesRepository.findAllEntriesWithLanguageAndTranslationLanguage(language, translationLanguage);
 
         List<WordsEntry> possibleWords = new LinkedList<>();
-        for (MatchesEntry m: foundEntriesWithLanguages) {
+        for (MatchesEntry m : foundEntriesWithLanguages) {
             if (m.getWord_language().equals(language)) {
                 possibleWords.add(wordsService.findById(m.getWord_id()));
             }
@@ -75,7 +75,7 @@ public class MatchesService {
         WordsEntry mostLikelyWord = null;
         int fuzzyMatchRate = FUZZY_MATCH_LIMITER;
 
-        for (WordsEntry w: possibleWords) {
+        for (WordsEntry w : possibleWords) {
             int currentWordLevenshteinRate = Levenshtein.ld(word, w.getWord());
             if (currentWordLevenshteinRate <= fuzzyMatchRate) {
                 mostLikelyWord = w;
@@ -93,7 +93,6 @@ public class MatchesService {
         try {
             return matchesRepository.findAlreadyEnteredMatchWithWords(wordId, matchingWordId);
         } catch (Exception e) {
-            System.out.println("no entered match found");
             return null;
         }
     }
@@ -101,7 +100,6 @@ public class MatchesService {
     @CrossOrigin
     @PostMapping
     public MatchesEntry saveMatchesEntry(@RequestBody MatchesEntry matchesEntry) {
-
         return matchesRepository.save(matchesEntry);
     }
 }

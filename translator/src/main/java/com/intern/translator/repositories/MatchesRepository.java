@@ -11,10 +11,9 @@ public interface MatchesRepository extends JpaRepository<MatchesEntry, Long> {
     //table structure:    (automatic) match_id  |  matching_word_id  | matching_word_language |  word_id | word_language
 
     @Query("SELECT m FROM MatchesEntry m WHERE m.word_id=:word_id " +
-        "AND m.matching_word_language LIKE lower(concat('%', :matching_word_language,'%'))")
+            "AND m.matching_word_language LIKE lower(concat('%', :matching_word_language,'%'))")
     List<MatchesEntry> findMatchingWordsByWordIdAndMatchingLanguage(@Param("word_id") Long word_id,
                                                                     @Param("matching_word_language") String matching_word_language);
-
 
 
     @Query("SELECT m FROM MatchesEntry m WHERE m.matching_word_id=:matching_word_id " +
