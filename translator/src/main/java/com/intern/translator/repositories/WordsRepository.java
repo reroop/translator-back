@@ -16,4 +16,6 @@ public interface WordsRepository extends JpaRepository<WordsEntry, Long> {
     @Query("SELECT w from WordsEntry w WHERE w.language=:language")
     List<WordsEntry> findAllLanguageWords(@Param("language") String language);
 
+    @Query ("SELECT DISTINCT w.language FROM WordsEntry w")
+    List<String> getAllSavedLanguages();
 }

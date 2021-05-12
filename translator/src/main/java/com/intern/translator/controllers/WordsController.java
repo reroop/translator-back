@@ -28,6 +28,12 @@ public class WordsController {
     }
 
     @CrossOrigin
+    @GetMapping("languages")
+    public List<String> getAllSavedLanguages() {
+        return wordsService.getAllSavedLanguages();
+    }
+
+    @CrossOrigin
     @GetMapping("{id}")
     public WordsEntry getWordsEntry(@PathVariable Long id) {
         return wordsService.findById(id);

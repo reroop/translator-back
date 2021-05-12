@@ -39,4 +39,8 @@ public class WordsService {
     public List<WordsEntry> findAllLanguageWords(String language) {
         return wordsRepository.findAllLanguageWords(language);
     }
+
+    public List<String> getAllSavedLanguages() {
+        return wordsRepository.getAllSavedLanguages();
+    }
 }
